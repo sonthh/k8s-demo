@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: k8s-demo
+  name: k8s-demo
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: k8s-demo
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: k8s-demo
+    spec:
+      containers:
+        - image: sonthh98/k8s-demo:8477fd5
+          imagePullPolicy: Always
+          name: k8s-demo
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
